@@ -2,18 +2,24 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using TMPro;
 using UnityEngine;
 
 public class Client : MonoBehaviour {
-    public const string IP = "127.0.0.1";
-    public const int Port = 6000;
+    [Header("UI")]
+    public TMP_InputField ipInput;
+    public TMP_InputField portInput;
 
+    [Header("Value")]
+    public string IP = "127.0.0.1";
+    public int Port = 6000;
     public string message;
 
-    public SocketTcp socketTcp;
+    private AKIRA.Net.Network network;
 
-    private void Start() {
-        Debug.Log("Start");
+    private async void Start() {
+        network = new(IP, Port);
+        await network.Connect();
     }
 
     [ContextMenu("Send")]
@@ -40,12 +46,17 @@ public class Client : MonoBehaviour {
 
 
     [ContextMenu("Send2")]
-    private void Send2() {
-        TcpClient client = new(IP, Port);
-        var stream = client.GetStream();
-        var msg = Encoding.UTF8.GetBytes(message);
-        stream.Write(msg, 0, msg.Length);
-        stream.Close();
-        client.Close();
+    private async void Send2() {
+        await network.Send(message);
+        // TcpClient client = new(IP, Port);
+        // var stream = client.GetStream();
+        // var msg = Encoding.UTF8.GetBytes(message);
+        // stream.Write(msg, 0, msg.Length);
+        // stream.Close();
+        // client.Close();
+    }
+    
+    private void OnDestroy() {
+        network.Dispose();
     }
 }
