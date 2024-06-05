@@ -2,6 +2,7 @@
 #include <Winsock2.h>
 #include <iostream>
 #include <string>
+#include <map>
 #include "Utility.h"
 
 int main()
@@ -9,8 +10,9 @@ int main()
     WSADATA wsaData;
     SOCKET sockServer;
     SOCKADDR_IN addrServer;
-    SOCKET sockClient;
     SOCKADDR_IN addrClient;
+
+    std::map<SOCKET, SOCKET> clientSockets; // Map to store client sockets
     WSAStartup(MAKEWORD(2, 2), &wsaData);
     sockServer = socket(AF_INET, SOCK_STREAM, 0);
     addrServer.sin_addr.S_un.S_addr = htonl(INADDR_ANY);//INADDR_ANY表示任何IP
@@ -20,26 +22,42 @@ int main()
 
     //Listen监听端
     listen(sockServer, 5);//5为等待连接数目
-    printf("服务器已启动:\n监听中...\n");
+    printf("Server Started:\n");
+
     int len = sizeof(SOCKADDR);
-    // 字符串数组的最后一位需要置为“\0”，所以初始化，并预留一位即可
-    char sendBuf[101] = { 0 };//发送至客户端的字符串
-    char recvBuf[101] = { 0 };//接受客户端返回的字符串
+    char sendBuf[100];//发送至客户端的字符串
+    char recvBuf[100];//接受客户端返回的字符串
 
-    //会阻塞进程，直到有客户端连接上来为止
-    sockClient = accept(sockServer, (SOCKADDR*)&addrClient, &len);
-    printf("client connected?\n");
+    while (true) {
+        std::cout << "Wait Connected...." << std::endl;
+        //会阻塞进程，直到有客户端连接上来为止
+        SOCKET sockClient = accept(sockServer, (SOCKADDR*)&addrClient, &len);
 
-    //接收并打印客户端数据
-    recv(sockClient, recvBuf, 100, 0);
-    std::cout << recvBuf << std::endl;
+        if (sockClient != INVALID_SOCKET) {
+            clientSockets[sockClient] = sockClient;
+            std::cout << "Client: " << sockClient << " connected" << std::endl;
 
-    std::cout << UTF8ToGBEx(recvBuf) << std::endl;
+            while (true) {
+                memset(recvBuf, 0, sizeof(recvBuf));
+                int bytesReceived = recv(sockClient, recvBuf, sizeof(recvBuf), 0);
+                if (bytesReceived > 0) {
+                    recvBuf[bytesReceived] = '\0'; // Null-terminate the string
+                    std::cout << "Received message: " << UTF8ToGBEx(recvBuf) << std::endl;
+                    std::cout << "Send back message: " << UTF8ToGBEx(recvBuf) << std::endl;
+                    // Send message back to client
+                    send(sockClient, recvBuf, strlen(recvBuf), 0);
+                }
+                else if (bytesReceived == 0) { // Client closed connection
+                    std::cout << "Disconnect Client " << sockClient << std::endl;
+                    closesocket(sockClient);
+                    clientSockets.erase(sockClient);
+                    break;
+                }
+            }
+        }
+    }
 
-    //std::cout << "send: " << sendBuf << std::endl;
-    //sockClient = send(sockServer, sendBuf, len, 0);
-
-    //关闭socket
-    closesocket(sockClient);
+    closesocket(sockServer);
     WSACleanup();
+
 }

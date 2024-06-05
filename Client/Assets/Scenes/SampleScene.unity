@@ -1797,50 +1797,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1979090733}
   m_CullTransparentMesh: 1
---- !u!1 &2012705482
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2012705483}
-  - component: {fileID: 2012705484}
-  m_Layer: 0
-  m_Name: SocketTcp
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2012705483
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2012705482}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2012705484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2012705482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8dd6b7afcb51841b4ba5a9b74154df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2023119280
 GameObject:
   m_ObjectHideFlags: 0
@@ -1890,7 +1846,6 @@ MonoBehaviour:
   IP: 127.0.0.1
   Port: 6000
   message: "\u54C8\u54C8"
-  socketTcp: {fileID: 2012705484}
 --- !u!1 &2130181002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,4 +2031,3 @@ SceneRoots:
   - {fileID: 137449690}
   - {fileID: 422602109}
   - {fileID: 2023119281}
-  - {fileID: 2012705483}

@@ -22,32 +22,34 @@ public class Client : MonoBehaviour {
         await network.Connect();
     }
 
-    [ContextMenu("Send")]
-    private void Send() {
-        //创建socket
-        var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        //连接服务器
-        tcpSocket.Connect(IPAddress.Parse(IP), Port);
-        Debug.Log("连接服务器");
-        // //接收消息
-        // byte[] bt = new byte[1024];
-        // int messgeLength = tcpSocket.Receive(bt);
-        // Debug.Log(Encoding.UTF8.GetString(bt));
-        //发送消息
-        Debug.Log($"发送消息 {message}");
-        tcpSocket.Send(Encoding.UTF8.GetBytes(message));
-        // //接收消息
-        // byte[] bt = new byte[1024];
-        // int messgeLength = tcpSocket.Receive(bt);
-        // Debug.Log($"接受消息 {Encoding.UTF8.GetString(bt)}");
+    // [ContextMenu("Send")]
+    // private void Send() {
+    //     //创建socket
+    //     var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+    //     //连接服务器
+    //     tcpSocket.Connect(IPAddress.Parse(IP), Port);
+    //     Debug.Log("连接服务器");
+    //     // //接收消息
+    //     // byte[] bt = new byte[1024];
+    //     // int messgeLength = tcpSocket.Receive(bt);
+    //     // Debug.Log(Encoding.UTF8.GetString(bt));
+    //     //发送消息
+    //     Debug.Log($"发送消息 {message}");
+    //     tcpSocket.Send(Encoding.UTF8.GetBytes(message));
+    //     // //接收消息
+    //     // byte[] bt = new byte[1024];
+    //     // int messgeLength = tcpSocket.Receive(bt);
+    //     // Debug.Log($"接受消息 {Encoding.UTF8.GetString(bt)}");
         
-        tcpSocket.Disconnect(false);
-    }
+    //     tcpSocket.Disconnect(false);
+    // }
 
 
-    [ContextMenu("Send2")]
+    [ContextMenu("Send")]
     private async void Send2() {
-        await network.Send(message);
+
+        var buffer = await (await network.Send(message)).Read();
+        Debug.Log(buffer);
         // TcpClient client = new(IP, Port);
         // var stream = client.GetStream();
         // var msg = Encoding.UTF8.GetBytes(message);

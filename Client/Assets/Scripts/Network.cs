@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AKIRA.Net {
     public class Network : IDisposable {
+
         // ip
         public string IP { get; private set; }
         // port
@@ -18,7 +19,7 @@ namespace AKIRA.Net {
         /// <summary>
         /// Disconnect and reconnected time, million seconds
         /// </summary>
-        public int WaitConnectMillionSeconds = 3000;
+        public static int WaitConnectMillionSeconds = 3000;
 
         /// <summary>
         /// send and receive buff size
@@ -34,6 +35,9 @@ namespace AKIRA.Net {
         /// </summary>
         public bool IsConnected => client != null && client.Connected;
 
+        private static bool isTryConnected = false;
+
+
         public Network(string ip, int port) {
             IP = ip;
             Port = port;
@@ -44,6 +48,12 @@ namespace AKIRA.Net {
         /// </summary>
         /// <returns></returns>
         public async Task<Network> Connect() {
+            lock (this) {
+                if (isTryConnected)
+                    return default;
+                isTryConnected = true;
+            }
+
             try {
                 if (!IsConnected) {
                     client = new(IP, Port) {
@@ -54,8 +64,10 @@ namespace AKIRA.Net {
                     };
                     stream = client.GetStream();
                     Log($"Connect server {IP}:{Port} successfull");
+                    isTryConnected = false;
                 }
             } catch {
+                isTryConnected = false;
                 Disconnect();
                 await Task.Delay(WaitConnectMillionSeconds);
                 Log($"Try to connect {IP}:{Port}");
@@ -79,17 +91,34 @@ namespace AKIRA.Net {
             try {
                 await stream.WriteAsync(buffer, 0, buffer.Length);
                 await stream.FlushAsync();
+                Log("Send Server buffer successfully");
             } catch {
                 Disconnect();
-                var network = await Connect();
-                await network.Send(buffer);
+                Log("Try reconnect server and send buffer...");
+                await (await Connect())?.Send(buffer);
             }
 
             return this;
         }
 
+        public async Task<string> Read() {
+            byte[] buffer = new byte[MaxBufferSize];
+            try {
+                var value = await stream.ReadAsync(buffer, 0, buffer.Length);
+            } catch {
+                Disconnect();
+                Log("Try reconnect server and read buffer...");
+                await (await Connect())?.Read();
+            }
+
+            return Encoding.UTF8.GetString(buffer);
+        }
+
         public void Dispose() {
             Disconnect();
+            isTryConnected = true;
+            stream = null;
+            client = null;
         }
 
         private void Log(object msg) {

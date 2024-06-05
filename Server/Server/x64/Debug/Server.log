@@ -1,2 +1,4 @@
 ﻿  Server.cpp
+E:\UnityProject\Server-Client\Server\Server.cpp(48,53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\UnityProject\Server-Client\Server\Server.cpp(28,10): warning C4101: 'sendBuf': unreferenced local variable
   Server.vcxproj -> E:\UnityProject\Server-Client\Server\x64\Debug\Server.exe
