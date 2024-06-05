@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 #include "Utility.h"
+#include "ConnectHandler.h"
+#include <thread>
 
 int main()
 {
@@ -23,37 +25,20 @@ int main()
     //Listen监听端
     listen(sockServer, 5);//5为等待连接数目
     printf("Server Started:\n");
-
     int len = sizeof(SOCKADDR);
-    char sendBuf[100];//发送至客户端的字符串
-    char recvBuf[100];//接受客户端返回的字符串
 
     while (true) {
         std::cout << "Wait Connected...." << std::endl;
-        //会阻塞进程，直到有客户端连接上来为止
+        // stop main thread and wait until client connected
         SOCKET sockClient = accept(sockServer, (SOCKADDR*)&addrClient, &len);
 
         if (sockClient != INVALID_SOCKET) {
             clientSockets[sockClient] = sockClient;
             std::cout << "Client: " << sockClient << " connected" << std::endl;
 
-            while (true) {
-                memset(recvBuf, 0, sizeof(recvBuf));
-                int bytesReceived = recv(sockClient, recvBuf, sizeof(recvBuf), 0);
-                if (bytesReceived > 0) {
-                    recvBuf[bytesReceived] = '\0'; // Null-terminate the string
-                    std::cout << "Received message: " << UTF8ToGBEx(recvBuf) << std::endl;
-                    std::cout << "Send back message: " << UTF8ToGBEx(recvBuf) << std::endl;
-                    // Send message back to client
-                    send(sockClient, recvBuf, strlen(recvBuf), 0);
-                }
-                else if (bytesReceived == 0) { // Client closed connection
-                    std::cout << "Disconnect Client " << sockClient << std::endl;
-                    closesocket(sockClient);
-                    clientSockets.erase(sockClient);
-                    break;
-                }
-            }
+            ConnectHandler hander(sockClient, clientSockets);
+            std::thread t(&ConnectHandler::HandConnect, hander);
+            t.detach(); // Detach the thread to keep running independently
         }
     }
 

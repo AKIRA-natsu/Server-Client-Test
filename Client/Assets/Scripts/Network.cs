@@ -24,7 +24,7 @@ namespace AKIRA.Net {
         /// <summary>
         /// send and receive buff size
         /// </summary>
-        private const int MaxBufferSize = 8192;
+        private const int MaxBufferSize = 4096;
         /// <summary>
         /// connect time out, million seconds
         /// </summary>
