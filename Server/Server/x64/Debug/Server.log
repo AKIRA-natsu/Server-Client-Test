@@ -1,5 +1,2 @@
-﻿  ConnectHandler.cpp
-E:\UnityProject\Server-Client\Server\ConnectHandler.cpp(15,42): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  Server.cpp
-  Generating Code...
+﻿  Server.cpp
   Server.vcxproj -> E:\UnityProject\Server-Client\Server\x64\Debug\Server.exe

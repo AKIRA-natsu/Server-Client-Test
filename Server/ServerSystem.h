@@ -2,13 +2,13 @@
 #pragma comment(lib,"ws2_32.lib")
 #include <Winsock2.h>
 #include <iostream>
-#include <string>
+#include <thread>
 #include "Utility.h"
 #include "ConnectHandler.h"
-#include <thread>
+#include "Singleton.h"
 
 namespace AKIRA_Net {
-	class ServerSystem {
+	class ServerSystem : public AKIRA_Common::Singleton<ServerSystem> {
 	public:
 		ServerSystem() {
             WSADATA wsaData;
@@ -22,7 +22,7 @@ namespace AKIRA_Net {
 
             //Listen监听端
             listen(sockServer, 5);//5为等待连接数目
-            printf("Server Started:\n");
+            std::cout << "Server Started:" << std::endl;
             len = sizeof(SOCKADDR);
 		}
 

@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="ConnectHandler.h" />
     <ClInclude Include="ServerSystem.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>

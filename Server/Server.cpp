@@ -2,6 +2,6 @@
 
 int main()
 {
-    auto system = AKIRA_Net::ServerSystem();
-    system.Connect();
+    auto system = AKIRA_Net::ServerSystem::GetInstance();
+    system->Connect();
 }
