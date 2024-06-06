@@ -46,16 +46,10 @@ public class Client : MonoBehaviour {
 
 
     [ContextMenu("Send")]
-    private async void Send2() {
+    private async void Send() {
 
         var buffer = await (await network.Send(message)).Read();
         Debug.Log(buffer);
-        // TcpClient client = new(IP, Port);
-        // var stream = client.GetStream();
-        // var msg = Encoding.UTF8.GetBytes(message);
-        // stream.Write(msg, 0, msg.Length);
-        // stream.Close();
-        // client.Close();
     }
     
     private void OnDestroy() {

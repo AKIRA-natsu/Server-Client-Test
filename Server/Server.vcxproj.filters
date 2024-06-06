@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Server.cpp">
+    <ClCompile Include="ConnectHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectHandler.cpp">
+    <ClCompile Include="Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,6 +27,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConnectHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
