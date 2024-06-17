@@ -1,2 +1,6 @@
-﻿  Server.cpp
+﻿  ConnectHandler.cpp
+E:\UnityProject\Server-Client\Server\Net\ConnectHandler.cpp(15,42): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Server.cpp
+  Generating Code...
+  LINK : E:\UnityProject\Server-Client\Server\x64\Debug\Server.exe not found or not built by the last incremental link; performing full link
   Server.vcxproj -> E:\UnityProject\Server-Client\Server\x64\Debug\Server.exe

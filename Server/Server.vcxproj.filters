@@ -15,24 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConnectHandler.cpp">
+    <ClCompile Include="Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Server.cpp">
+    <ClCompile Include="Net\ConnectHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utility.h">
+    <ClInclude Include="Net\ConnectHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectHandler.h">
+    <ClInclude Include="Net\ServerSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerSystem.h">
+    <ClInclude Include="Net\Singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
+    <ClInclude Include="Net\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
